@@ -59,30 +59,14 @@ python main.py
 The interface will appear. Start the webcam inference by pressing the first button, Start Webcam Inference.
 Optionally, adjust the sliding window for Start Gaze Estimation to cover the bounding box of your eye.
 Press the second button, Start Calibration, to start capturing eye photos for gaze position estimation.
-After calibration is complete, press the calibration button again to improve the accuracy of the gaze estimation.
 
-## Training the Gaze Estimation Model
-Navigate to the Code/gaze_estimation directory:
+Next , click the next buttom 'Training' if u think the dataset is enough. Model will be trained and relative Graph will be generated.
 
-```bash
-cd Code/gaze_estimation
-```
-Run the training script to begin the training process:
-
-```bash
-python train.py
-```
-After training is finished, return to the Code directory and run the main program again.
-
-## Estimating Gaze Points
-In the Code directory, run the main program:
-
-```bash
-python main.py
-```
 Press the Start Gaze Estimation button to begin estimating gaze points.
 A black screen will pop up. Look at the screen, and the gaze estimation model will predict the location of the dot on the screen based on your gaze.
 Ensure your webcam is connected and functioning properly.
+
+
 Calibration and gaze estimation may require several attempts to achieve optimal accuracy.
 Make sure the y_offset is properly adjusted for your setup during calibration for more accurate results.
 
