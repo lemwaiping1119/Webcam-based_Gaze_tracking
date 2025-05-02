@@ -46,7 +46,7 @@ python train.py
 If you want to visualize the keypoint positions on each photo, run:
 
 ```bash
-python your_script.py --visualize
+python train.py --visualize
 ```
 After training is complete, you can return to the Code directory and run the main interface.
 
