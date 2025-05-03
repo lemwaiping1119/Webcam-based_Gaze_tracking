@@ -1,77 +1,126 @@
-# Calibration and Webcam Interface
+# Webcam-Based Gaze Estimation System
 
-This project provides an interactive user interface for webcam-based calibration and gaze estimation. It uses computer vision models to detect faces, estimate head poses, and track eye movements using webcam inference. The interface also allows users to start calibration, adjust gaze estimation, and manage calibration data files.
+This project presents a complete pipeline for webcam-based gaze estimation using facial landmark detection, head pose estimation, and convolutional neural networks (CNNs). It provides a user-friendly GUI for real-time calibration, gaze tracking, model training, and performance evaluation.
 
-## Features
+---
 
-- **Webcam Inference**: Start webcam inference for real-time face and landmark detection.
-- **Calibration**: Perform calibration with the ability to adjust the `y_offset` for more accurate calibration.
-- **Gaze Estimation**: Estimate gaze points based on the webcam input.
-- **File Management**: Delete calibration files saved on the local machine.
-- **Graphical User Interface**: A simple and intuitive GUI built with Tkinter.
+## 🧠 System Architecture
 
-## Requirements
+1. **Initialization**  
+   The user launches the application and grants access to the webcam.
 
-Make sure you have Python 3.6 or higher installed, along with the following dependencies:
+2. **Face & Eye Detection**  
+   Facial landmarks are detected using MediaPipe, and both eyes are cropped using facial keypoints.
+
+3. **Head Pose Estimation**  
+   Yaw and pitch angles are calculated from facial landmarks to provide context for gaze prediction.
+
+4. **Calibration Phase**  
+   The user is shown a series of calibration dots on the screen.  
+   At each point:
+   - Eye images are captured
+   - Head pose data (yaw, pitch) is recorded
+   - Ground truth screen coordinates are stored
+
+5. **Model Input**  
+   The CNN receives:
+   - Cropped left eye image  
+   - Cropped right eye image  
+   - Head pose angles (yaw, pitch)  
+   and predicts the gaze coordinates (x, y).
+
+6. **Evaluation**  
+   Predicted gaze points are compared to ground truth using **Euclidean Distance (EUD)**.
+
+7. **Visualization**  
+   Graphs show:
+   - Training and validation loss  
+   - MAE, RMSE, R² metrics  
+   - Gaze prediction error (EUD)
+
+---
+
+## 🎯 Features
+
+- **Webcam Inference**: Real-time facial landmark and head pose detection.
+- **Calibration**: Interactive calibration using multiple screen points.
+- **Gaze Estimation**: Predicts user’s gaze position using CNN model.
+- **Model Training**: Trains the CNN using the collected calibration data.
+- **Result Visualization**: Shows loss curves, evaluation metrics, and EUD graph.
+- **File Management**: Easily manage calibration datasets.
+- **GUI**: Tkinter-based interface for easy interaction.
+
+---
+
+## 📦 Requirements
+
+Ensure Python 3.6+ is installed. Required packages:
 
 - `opencv-python`
 - `torch`
-- `PIL` (Pillow)
-- `numpy`
 - `torchvision`
+- `Pillow`
+- `numpy`
 - `mediapipe`
 - `tkinter`
 - `threading`
 
-To install the required dependencies, you can use the following command:
+Install them via:
 
 ```bash
 pip install opencv-python torch torchvision pillow numpy mediapipe
 ```
-##Face and Keypoint Detection
-This project uses mp_detection for face detection. The facial keypoint detector is trained using the 300VW dataset and the SimpleFaceNet architecture.
 
-Training the Keypoint Detector
-Go to the Code/facial_keypoint directory:
+---
+
+## 🧍 Face and Keypoint Detection
+
+The project uses `mp_detection` for face detection and a custom keypoint detector trained using the **300VW** dataset with **SimpleFaceNet**.
+
+### 🏋️‍♂️ Training the Keypoint Detector
+
+Navigate to the directory:
 
 ```bash
 cd Code/facial_keypoint
 ```
-Run the training script:
 
+Train the model:
 
 ```bash
 python train.py
 ```
-If you want to visualize the keypoint positions on each photo, run:
+
+To visualize keypoints:
 
 ```bash
 python train.py --visualize
 ```
-After training is complete, you can return to the Code directory and run the main interface.
 
-# Starting the Calibration and Gaze Estimation Process
-In the Code directory, run the main program:
+---
+
+## 🚀 How to Run the System
+
+From the main directory:
 
 ```bash
+cd Code
 python main.py
 ```
-The interface will appear. Start the webcam inference by pressing the first button, Start Webcam Inference.
-Optionally, adjust the sliding window for Start Gaze Estimation to cover the bounding box of your eye.
-Press the second button, Start Calibration, to start capturing eye photos for gaze position estimation.
 
-Next , click the next buttom 'Training' if u think the dataset is enough. Model will be trained and relative Graph will be generated.
+### 👣 Workflow
 
-Press the Start Gaze Estimation button to begin estimating gaze points.
-A black screen will pop up. Look at the screen, and the gaze estimation model will predict the location of the dot on the screen based on your gaze.
-Ensure your webcam is connected and functioning properly.
+1. Press **Start Webcam Inference** to begin face and eye detection.
+2. Adjust the sliding window for eye bounding box if needed.
+3. Click **Start Calibration** to collect gaze data. Make sure webcam inference is active.
+4. Continue webcam inference to perform gaze estimation and evaluation.
+5. Once all data is collected, **press 'q'** to exit webcam inference and **close the webcam window**.
+6. Then click **Training** to train the model.
+7. A graph will be generated to show the train and validation loss along with **MAE**, **RMSE**, and **R²**.
+8. After training is finished, press **Start Gaze Estimation** to start model evaluation. A graph of **Euclidean Distance (EUD)** will be generated.
 
+---
 
-Calibration and gaze estimation may require several attempts to achieve optimal accuracy.
-Make sure the y_offset is properly adjusted for your setup during calibration for more accurate results.
-
-
-
-
+Make sure to keep the webcam active during calibration and evaluation. Exit the webcam window before starting training.
 
 
